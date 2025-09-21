@@ -1,0 +1,66 @@
+:root {
+  --bubble-size: 64px;
+}
+
+.app {
+  padding: 20px;
+  background: #eaf6ff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  max-width: 1100px;
+  margin: 20px auto;
+  font-family: Inter, sans-serif;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.controls button {
+  margin-left: 12px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  background: #2b9bf3;
+  color: #fff;
+  cursor: pointer;
+}
+
+.bubble-grid {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  padding: 12px;
+  margin-bottom: 16px;
+}
+
+.bubble {
+  width: var(--bubble-size);
+  height: var(--bubble-size);
+  border-radius: 999px;
+  background: radial-gradient(closest-side, #ffffff 0%, #eaf6ff 36%, #ccecff 90%);
+  box-shadow: 0 6px 10px rgba(80,160,220,0.12), inset 0 -6px 10px rgba(0,0,0,0.05);
+  border: 1px solid rgba(255,255,255,0.7);
+  cursor: pointer;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.bubble:active {
+  transform: scale(0.95);
+}
+
+.bubble.popped {
+  transform: scale(0.6);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.sliders label {
+  display: block;
+  margin-bottom: 8px;
+  color: #07314a;
+  font-size: 14px;
+}

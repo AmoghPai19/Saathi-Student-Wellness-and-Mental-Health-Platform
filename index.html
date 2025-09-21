@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Saathi - Your Mental Health Companion</title>
+    <meta name="description" content="Comprehensive digital wellness platform for students featuring AI support, professional counseling, peer community, and multilingual mental health resources." />
+    <meta name="author" content="Saathi" />
+
+    <meta property="og:title" content="Saathi - Your Mental Health Companion" />
+    <meta property="og:description" content="AI-powered mental health support, professional counseling, and peer community designed specifically for students." />
+    <meta property="og:type" content="website" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@saathi_wellness" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  </head>
+
+  <body>
+    <!-- Your React root -->
+    <div id="root"></div>
+
+    <!-- Google Translate dropdown -->
+    <div id="google_translate_element" style="position: fixed; bottom: 10px; right: 10px; z-index: 1000;"></div>
+
+    <!-- Google Translate script -->
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {pageLanguage: 'en'}, 
+          'google_translate_element'
+        );
+      }
+    </script>
+
+    <script type="text/javascript" 
+      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit">
+    </script>
+
+    <!-- Your React entry point -->
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
