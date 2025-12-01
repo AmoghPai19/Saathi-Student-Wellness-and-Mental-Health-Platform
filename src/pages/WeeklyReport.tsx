@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { joinUrl } from "@/lib/api";
 import {
   BarChart,
   Bar,
@@ -31,7 +32,7 @@ const WeeklyReport: React.FC = () => {
   const fetchReport = async () => {
     if (!userId) return;
     try {
-      const res = await axios.get(`http://localhost:5000/api/mood/weekly/${userId}`);
+      const res = await axios.get(joinUrl(`/api/mood/weekly/${userId}`));
       const report = res.data.weeklyReport || {};
 
       const chartData = Object.entries(report).map(([mood, count]) => ({

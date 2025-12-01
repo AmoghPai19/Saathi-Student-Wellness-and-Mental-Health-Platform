@@ -50,7 +50,8 @@ const ChatSupport = () => {
 
   const sendMessageToN8n = async (message: string) => {
     try {
-      const response = await fetch('https://sumanth23.app.n8n.cloud/webhook/a73b7815-198a-4378-b036-61500647dffd/chat', {
+      const webhook = (import.meta.env.VITE_N8N_WEBHOOK_URL as string) ?? 'https://sumanth23.app.n8n.cloud/webhook/a73b7815-198a-4378-b036-61500647dffd/chat';
+      const response = await fetch(webhook, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
 import { Input } from "../components/ui/input";
 import { BookOpen, Book, Play, Volume2, Heart } from "lucide-react";
 import axios from "axios";
+import { joinUrl } from "@/lib/api";
 import "../index.css";
 
 interface Task {
@@ -33,7 +34,7 @@ const ResourceHub = () => {
   useEffect(() => {
     if (!userId) return;
     axios
-      .get(`http://localhost:5000/api/journal/${userId}`)
+      .get(joinUrl(`/api/journal/${userId}`))
       .then((res) => setEntries(res.data))
       .catch((err) => console.error("Failed to fetch entries", err));
   }, [userId]);
@@ -44,12 +45,12 @@ const ResourceHub = () => {
       return;
     }
     try {
-      await axios.post("http://localhost:5000/api/journal", { userId, entry: journalEntry });
+      await axios.post(joinUrl('/api/journal'), { userId, entry: journalEntry });
       setSaveStatus("Journal entry saved successfully!");
       setJournalEntry("");
       setTimeout(() => setSaveStatus(""), 3000);
 
-      const res = await axios.get(`http://localhost:5000/api/journal/${userId}`);
+      const res = await axios.get(joinUrl(`/api/journal/${userId}`));
       setEntries(res.data);
     } catch (err) {
       setSaveStatus("Failed to save entry.");

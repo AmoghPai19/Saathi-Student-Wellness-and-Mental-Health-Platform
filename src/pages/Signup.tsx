@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { joinUrl } from "@/lib/api";
 import "./Auth.css"; // shared CSS for login/signup
 
 const Signup: React.FC = () => {
@@ -15,7 +16,7 @@ const Signup: React.FC = () => {
     setError("");
 
     try {
-      await axios.post("http://localhost:5000/api/auth/signup", {
+      await axios.post(joinUrl('/api/auth/signup'), {
         username,
         password,
         role,

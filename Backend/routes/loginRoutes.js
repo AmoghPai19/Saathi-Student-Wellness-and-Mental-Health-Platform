@@ -86,12 +86,22 @@ router.post('/login', async (req, res) => {
       }
     };
 
+    // Validate JWT secret before attempting to sign
+    const jwtSecret = process.env.JWT_SECRET;
+    if (!jwtSecret) {
+      console.error('FATAL: JWT_SECRET is not configured in environment variables.');
+      return res.status(500).json({ msg: 'Server misconfiguration: JWT secret missing' });
+    }
+
     jwt.sign(
       payload,
-      process.env.JWT_SECRET,
+      jwtSecret,
       { expiresIn: '1h' },
       (err, token) => {
-        if (err) throw err;
+        if (err) {
+          console.error('Error signing JWT:', err);
+          return res.status(500).json({ msg: 'Error creating auth token' });
+        }
         res.json({ token, role: user.role });
       }
     );

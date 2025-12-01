@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { joinUrl } from "@/lib/api";
 
 const moods = [
   { emoji: "😊", label: "Happy", color: "bg-yellow-300" },
@@ -24,7 +25,7 @@ const MoodTracker: React.FC = () => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/mood", {
+      await axios.post(joinUrl('/api/mood'), {
         userId,
         mood: selectedMood,
       });
@@ -41,7 +42,7 @@ const MoodTracker: React.FC = () => {
   const fetchWeeklyReport = async () => {
     if (!userId) return;
     try {
-      const res = await axios.get(`http://localhost:5000/api/mood/weekly/${userId}`);
+      const res = await axios.get(joinUrl(`/api/mood/weekly/${userId}`));
       setWeeklyReport(res.data.weeklyReport || {});
     } catch (err) {
       console.error("Failed to fetch weekly report:", err);
