@@ -45,15 +45,7 @@ app.use(express.json());
 
 // MongoDB connection (only if MONGODB_URI is provided)
 let mongoConnected = false;
-if (process.env.MONGODB_URI) {
-  mongoose
-    .connect(process.env.MONGODB_URI, { dbName: "saathiDatabase" })
-    .then(() => {
-      console.log("✅ MongoDB connected successfully!");
-      mongoConnected = true;
-    })
-    .catch((err) => console.error("❌ MongoDB connection error:", err));
-
+function wireMongoEvents() {
   mongoose.connection.on("connected", () => {
     console.log("✅ MongoDB connection is OPEN");
     mongoConnected = true;
@@ -68,8 +60,20 @@ if (process.env.MONGODB_URI) {
     console.log("⚠️ MongoDB disconnected");
     mongoConnected = false;
   });
-} else {
-  console.warn("Skipping MongoDB connect because MONGODB_URI is not configured.");
+}
+
+async function connectMongo() {
+  if (!process.env.MONGODB_URI) {
+    console.warn("Skipping MongoDB connect because MONGODB_URI is not configured.");
+    return;
+  }
+  wireMongoEvents();
+  await mongoose.connect(process.env.MONGODB_URI, {
+    dbName: "saathiDatabase",
+    serverSelectionTimeoutMS: 10000,
+  });
+  console.log("✅ MongoDB connected successfully!");
+  mongoConnected = true;
 }
 
 // API Routes
@@ -97,10 +101,21 @@ app.get("/api/debug", (req, res) => {
 });
 
 // Health check
-app.get("/api/health", (_req, res) => res.json({ ok: true }));
+app.get("/api/health", (_req, res) => res.json({ ok: true, mongo: mongoose.connection.readyState }));
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server listening on port ${PORT}`);
-});
+// Start server after attempting DB connection to avoid early request buffering
+(async () => {
+  try {
+    await connectMongo();
+  } catch (err) {
+    console.error("❌ Failed to initialize MongoDB connection:", err?.message || err);
+  } finally {
+    app.listen(PORT, () => {
+      console.log(`🚀 Server listening on port ${PORT}`);
+      if (!process.env.MONGODB_URI) {
+        console.warn("⚠️ Server started without MongoDB URI. API calls that require DB will fail.");
+      }
+    });
+  }
+})();
 

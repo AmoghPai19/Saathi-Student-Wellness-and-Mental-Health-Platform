@@ -10,7 +10,8 @@ const configured =
   (env.VITE_REACT_BASE_URL as string) ||
   '';
 
-export const API_BASE = env.DEV ? '' : configured;
+// Prefer configured remote API even in dev when provided; otherwise use Vite proxy in dev
+export const API_BASE = configured || (env.DEV ? '' : '');
 
 export function joinUrl(path: string) {
   if (!path) return API_BASE;
