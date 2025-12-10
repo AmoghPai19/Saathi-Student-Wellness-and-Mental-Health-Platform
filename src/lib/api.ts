@@ -10,6 +10,7 @@ export function joinUrl(path: string) {
   if (/^https?:\/\//i.test(path)) return path;
   const base = API_BASE.replace(/\/$/, '');
   const p = path.replace(/^\//, '');
+  console.log(base ? `${base}/${p}` : `/${p}`);
   return base ? `${base}/${p}` : `/${p}`;
 }
 

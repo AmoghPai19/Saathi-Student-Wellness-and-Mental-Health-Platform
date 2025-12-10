@@ -18,7 +18,7 @@ const Login: React.FC = () => {
         username,
         password,
       });
-
+      console.log("Login response:", res.data); // debug
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", res.data.role);
       localStorage.setItem("userId", res.data._id); // Important for streak
@@ -57,7 +57,7 @@ const Login: React.FC = () => {
           <button type="submit">Login</button>
         </form>
         <span className="auth-link">
-          Don’t have an account? <a href="/signup">Sign up now!</a>
+          Don’t have an account? <a href="/Signup">Sign up now!</a>
         </span>
       </div>
     </div>
