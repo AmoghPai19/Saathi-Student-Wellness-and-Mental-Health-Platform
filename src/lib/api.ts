@@ -1,9 +1,17 @@
 const env = import.meta.env as any;
-// In dev prefer relative paths so Vite dev server proxy handles /api requests.
-// In production use the configured VITE_REACT_BASE_URL (or other fallbacks).
-export const API_BASE = env.DEV
-  ? ''
-  : (env.VITE_REACT_BASE_URL as string) || (env.REACT_BASE_URL as string) || (env.VITE_API_BASE_URL as string) || '';
+// Prefer a single canonical variable: VITE_API_URL should be the backend origin (no trailing /api)
+// e.g. VITE_API_URL=https://saathi-backend.example.com
+// During dev, leave empty to use the Vite proxy for relative /api requests.
+const configured =
+  (env.VITE_API_URL as string) ||
+  (env.VITE_BACKEND_URL as string) ||
+  (env.VITE_API_BASE_URL as string) ||
+  (env.REACT_BASE_URL as string) ||
+  (env.VITE_REACT_BASE_URL as string) ||
+  '';
+
+// Prefer configured remote API even in dev when provided; otherwise use Vite proxy in dev
+export const API_BASE = configured || (env.DEV ? '' : '');
 
 export function joinUrl(path: string) {
   if (!path) return API_BASE;
